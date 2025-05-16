@@ -20,8 +20,8 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(email, password, **extra_fields)
 
-    def get_by_natural_key(self, email):
-        return self.get(email=email)
+    # def get_by_natural_key(self, email):
+    #     return self.get(email=email)
     
 
 ## student at a university
@@ -40,18 +40,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
     
 
-## student at a university
-class Student(models.Model):
-    uni_id = models.CharField(max_length=255, unique=True, blank=None, null=False, default='0')
-    full_name = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    location = models.CharField(max_length=255,blank=True, null=True)
-    uni = models.CharField(max_length=255,blank=True, null=True)
-    
-    def __str__(self):
-        return self.full_name
-
 ## university
 class Uni(models.Model):
     name = models.CharField(max_length=255, unique=True, blank=None, null=False, default='0')
@@ -60,13 +48,38 @@ class Uni(models.Model):
     address = models.CharField(max_length=255,blank=True, null=True)
     state = models.CharField(max_length=255,blank=True, null=True)
 
+    def __str__(self):
+        return self.name
 
-## vehicle at the university
-class Hub(models.Model):
-    school_name_id = models.CharField(max_length=255, unique=True, blank=None, null=False, default='0')
+## student at a university
+class Student(models.Model):
+    uni = models.ForeignKey('Uni', on_delete=models.CASCADE,blank=True, null=True)
+    user = models.ForeignKey('User', on_delete=models.CASCADE,blank=True, null=True, default="1")
+    full_name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     location = models.CharField(max_length=255,blank=True, null=True)
+    
+    def __str__(self):
+        return self.full_name
+
+## student at a university
+class Location(models.Model):
+    uni = models.ForeignKey('Uni', on_delete=models.CASCADE,blank=True, null=True)
+    area_name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.area_name
+
+
+## vehicle at the university
+class Hub(models.Model):
+    uni = models.ForeignKey('Uni', on_delete=models.CASCADE,blank=True, null=True)
+    user = models.ForeignKey('User', on_delete=models.CASCADE,blank=True, null=True, default="1")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     is_availiable = models.BooleanField(default=True)
     driver_fullname = models.CharField(max_length=255,blank=True, null=True)
     driver_gender = models.CharField(max_length=255,blank=True, null=True)
@@ -81,10 +94,19 @@ class Hub(models.Model):
 
 ## rides made by the student using the hub at the university
 class Ride(models.Model):
+    class StatusChoices(models.TextChoices):
+        MADY = 'mady', 'ride requested'
+        NUKE = 'nuke', 'ride is on the way'
+        SPEEDY = 'speedy', 'ride in transit'
+        ZEUS = 'zeus', 'ride complete'
+
+
     where_from = models.CharField(max_length=255)
     where_to = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    student_id = models.ForeignKey('User', on_delete=models.CASCADE, blank=True, null=True)
+    student = models.ManyToManyField('Student', blank=True)
+    hub = models.ForeignKey('Hub', on_delete=models.CASCADE, blank=True, null=True)
+    uni = models.ForeignKey('Uni', on_delete=models.CASCADE, blank=True, null=True)
     transit_fee = models.CharField(max_length=255,blank=True, null=True)
-    transit_status = models.CharField(max_length=255,blank=True, null=True)
+    transit_status = models.CharField(max_length=225,choices=StatusChoices.choices,default="NA")

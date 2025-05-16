@@ -1,4 +1,4 @@
-from .models import User, Uni, Hub, Ride, Student
+from .models import User, Uni, Hub, Ride, Student, Location
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
@@ -15,6 +15,14 @@ class UserSerializer(serializers.ModelSerializer):
             'user_permissions': {'write_only': True},
         }
 
+# Create a proper login serializer
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(style={'input_type': 'password'})
+    
+    # This serializer is only for validation, not for creating users
+    class Meta:
+        fields = ('email', 'password')
 
 class UniSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,10 +35,21 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = "__all__"
 
+        depth = 1     
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = "__all__"
+
+        depth = 1  
+
 class HubSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hub
         fields = "__all__"
+
+        depth = 1
 
 
 class RideSerializer(serializers.ModelSerializer):
@@ -49,17 +68,19 @@ class UserLoginRequestSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=255)
 
 class StudentRequestSerializer(serializers.Serializer):
-    uni_id = serializers.CharField(max_length=225)
     email = serializers.CharField(max_length=255)
     uni = serializers.CharField(max_length=255)
     full_name = serializers.CharField(max_length=255)
 
 
 class HubRequestSerializer(serializers.Serializer):
-    school_name_id = serializers.CharField(max_length=255)
+    uni = serializers.CharField(max_length=255)
     driver_fullname = serializers.CharField(max_length=255)
     driver_gender = serializers.CharField(max_length=255)
 
+class LocationRequestSerializer(serializers.Serializer):
+    uni = serializers.CharField(max_length=255)
+    area_name = serializers.CharField(max_length=255)
 
 class UniversityRequestSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=225)

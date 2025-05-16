@@ -4,7 +4,7 @@ from .views import (
     UniListCreateAPIView, UniDetailAPIView,
     HubListCreateAPIView, HubDetailAPIView,
     RideListCreateAPIView, RideDetailAPIView,
-    AuthenticationView, UserView
+    AuthenticationView, UserView, LocationDetailAPIView
 )
 
 urlpatterns = [
@@ -23,4 +23,6 @@ urlpatterns = [
 
     path('rides/', RideListCreateAPIView.as_view()),
     path('rides/<int:pk>/', RideDetailAPIView.as_view()),
+
+    path('locations/<int:pk>/', LocationDetailAPIView.as_view()),
 ]
