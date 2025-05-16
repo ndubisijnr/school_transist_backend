@@ -3,10 +3,15 @@ from .views import (
     StudentListCreateAPIView, StudentDetailAPIView,
     UniListCreateAPIView, UniDetailAPIView,
     HubListCreateAPIView, HubDetailAPIView,
-    RideListCreateAPIView, RideDetailAPIView
+    RideListCreateAPIView, RideDetailAPIView,
+    AuthenticationView, UserView
 )
 
 urlpatterns = [
+    path('login/', AuthenticationView.as_view()),
+    path('register/', UserView.as_view()),
+
+
     path('students/', StudentListCreateAPIView.as_view()),
     path('students/<int:pk>/', StudentDetailAPIView.as_view()),
 

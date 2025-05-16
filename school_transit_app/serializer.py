@@ -1,7 +1,7 @@
-from .models import User, Uni, Hub, Ride
+from .models import User, Uni, Hub, Ride, Student
 from rest_framework import serializers
 
-class StudentSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = "__all__"
@@ -15,11 +15,17 @@ class StudentSerializer(serializers.ModelSerializer):
             'user_permissions': {'write_only': True},
         }
 
+
 class UniSerializer(serializers.ModelSerializer):
     class Meta:
         model = Uni
         fields = "__all__"
 
+
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = "__all__"
 
 class HubSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,3 +37,36 @@ class RideSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ride
         fields = "__all__"
+
+
+
+class UserRequestSerializer(serializers.Serializer):
+    email = serializers.CharField(max_length=255)
+    password = serializers.CharField(max_length=255)
+
+class UserLoginRequestSerializer(serializers.Serializer):
+    email = serializers.CharField(max_length=255)
+    password = serializers.CharField(max_length=255)
+
+class StudentRequestSerializer(serializers.Serializer):
+    uni_id = serializers.CharField(max_length=225)
+    email = serializers.CharField(max_length=255)
+    uni = serializers.CharField(max_length=255)
+    full_name = serializers.CharField(max_length=255)
+
+
+class HubRequestSerializer(serializers.Serializer):
+    school_name_id = serializers.CharField(max_length=255)
+    driver_fullname = serializers.CharField(max_length=255)
+    driver_gender = serializers.CharField(max_length=255)
+
+
+class UniversityRequestSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=225)
+    addresss = serializers.CharField(max_length=255)
+    state = serializers.CharField(max_length=255)
+
+
+class RequestRideRequestSerializer(serializers.Serializer):
+    where_from = serializers.CharField(max_length=255)
+    where_to = serializers.CharField(max_length=255)

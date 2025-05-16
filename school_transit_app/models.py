@@ -5,13 +5,12 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager, Permi
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, uni_id, email, password=None, **extra_fields):
-        if not uni_id:
-            raise ValueError('Uni_id field must be set')
+    def create_user(self, email, password=None, **extra_fields):
+       
         if not email:
             raise ValueError('email field must be set')
         email = self.normalize_email(email)
-        user = self.model(email=email, uni_id=uni_id, **extra_fields)
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -21,27 +20,37 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(email, password, **extra_fields)
 
-    def get_by_natural_key(self, uni_id):
-        return self.get(uni_id=uni_id)
+    def get_by_natural_key(self, email):
+        return self.get(email=email)
     
 
 ## student at a university
 class User(AbstractBaseUser, PermissionsMixin):
-    uni_id = models.CharField(max_length=255, unique=True, blank=None, null=False, default='0')
     email = models.CharField(max_length=255, unique=True, default='0')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    location = models.CharField(max_length=255,blank=True, null=True)
-    uni = models.CharField(max_length=255,blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []  # Add required fields
 
     objects = UserManager()  # Attach the custom manager here
-    
+
     def __str__(self):
         return self.email
+    
+
+## student at a university
+class Student(models.Model):
+    uni_id = models.CharField(max_length=255, unique=True, blank=None, null=False, default='0')
+    full_name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    location = models.CharField(max_length=255,blank=True, null=True)
+    uni = models.CharField(max_length=255,blank=True, null=True)
+    
+    def __str__(self):
+        return self.full_name
 
 ## university
 class Uni(models.Model):
@@ -49,6 +58,7 @@ class Uni(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     address = models.CharField(max_length=255,blank=True, null=True)
+    state = models.CharField(max_length=255,blank=True, null=True)
 
 
 ## vehicle at the university
@@ -57,8 +67,17 @@ class Hub(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     location = models.CharField(max_length=255,blank=True, null=True)
-    where_to = models.CharField(max_length=255,blank=True, null=True)
-    driver = models.CharField(max_length=255,blank=True, null=True)
+    is_availiable = models.BooleanField(default=True)
+    driver_fullname = models.CharField(max_length=255,blank=True, null=True)
+    driver_gender = models.CharField(max_length=255,blank=True, null=True)
+    driver_photo = models.CharField(max_length=255,blank=True, null=True)
+    driver_is_verified = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.driver_fullname
+
+
+
 
 ## rides made by the student using the hub at the university
 class Ride(models.Model):
