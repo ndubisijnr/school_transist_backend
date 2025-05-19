@@ -68,8 +68,9 @@ class UserLoginRequestSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=255)
 
 class StudentRequestSerializer(serializers.Serializer):
-    email = serializers.CharField(max_length=255)
+    user = serializers.CharField(max_length=255)
     uni = serializers.CharField(max_length=255)
+    school_id = serializers.CharField(max_length=255)
     full_name = serializers.CharField(max_length=255)
 
 

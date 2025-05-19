@@ -56,9 +56,11 @@ class Student(models.Model):
     uni = models.ForeignKey('Uni', on_delete=models.CASCADE,blank=True, null=True)
     user = models.ForeignKey('User', on_delete=models.CASCADE,blank=True, null=True, default="1")
     full_name = models.CharField(max_length=255)
+    school_id = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     location = models.CharField(max_length=255,blank=True, null=True)
+
     
     def __str__(self):
         return self.full_name
@@ -85,11 +87,10 @@ class Hub(models.Model):
     driver_gender = models.CharField(max_length=255,blank=True, null=True)
     driver_photo = models.CharField(max_length=255,blank=True, null=True)
     driver_is_verified = models.BooleanField(default=False)
+    location = models.CharField(max_length=255,blank=True, null=True)
 
     def __str__(self):
         return self.driver_fullname
-
-
 
 
 ## rides made by the student using the hub at the university
@@ -100,6 +101,10 @@ class Ride(models.Model):
         SPEEDY = 'speedy', 'ride in transit'
         ZEUS = 'zeus', 'ride complete'
 
+    class SeaterChoices(models.TextChoices):
+        ONE = 'one', 'one seater'
+        TWO = 'two', 'two seater'
+       
 
     where_from = models.CharField(max_length=255)
     where_to = models.CharField(max_length=255)
@@ -110,3 +115,10 @@ class Ride(models.Model):
     uni = models.ForeignKey('Uni', on_delete=models.CASCADE, blank=True, null=True)
     transit_fee = models.CharField(max_length=255,blank=True, null=True)
     transit_status = models.CharField(max_length=225,choices=StatusChoices.choices,default="NA")
+    wait_time = models.TimeField()
+    seater =  models.CharField(max_length=225,choices=SeaterChoices.choices,default=SeaterChoices.ONE)
+    review_comment = models.CharField(max_length=255)
+
+
+    def save(self, force_insert = ..., force_update = ..., using = ..., update_fields = ...):
+        return super().save(force_insert, force_update, using, update_fields)
