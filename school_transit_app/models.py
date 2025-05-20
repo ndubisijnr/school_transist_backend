@@ -115,7 +115,7 @@ class Ride(models.Model):
     uni = models.ForeignKey('Uni', on_delete=models.CASCADE, blank=True, null=True)
     transit_fee = models.CharField(max_length=255,blank=True, null=True)
     transit_status = models.CharField(max_length=225,choices=StatusChoices.choices,default="NA")
-    wait_time = models.TimeField()
+    wait_time = models.CharField(max_length=255,blank=True, null=True)
     seater =  models.CharField(max_length=225,choices=SeaterChoices.choices,default=SeaterChoices.ONE)
     review_comment = models.CharField(max_length=255)
 
