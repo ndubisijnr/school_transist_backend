@@ -78,12 +78,26 @@ class Location(models.Model):
 
 ## vehicle at the university
 class Hub(models.Model):
+    class SeaterChoices(models.TextChoices):
+        ONE = 'one', 'one seater'
+        TWO = 'two', 'two seater'
+
+    class VehicleTypeChoices(models.TextChoices):
+        motorcyle = 'motorcyle', 'motorcyle'
+        tricylce = 'tricylce', 'tricylce'
+        car = 'car', 'car'
+
+       
     uni = models.ForeignKey('Uni', on_delete=models.CASCADE,blank=True, null=True)
     user = models.ForeignKey('User', on_delete=models.CASCADE,blank=True, null=True, default="1")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_availiable = models.BooleanField(default=True)
     driver_fullname = models.CharField(max_length=255,blank=True, null=True)
+    driver_vehicle_type = models.CharField(max_length=255,choices=VehicleTypeChoices.choices,default=VehicleTypeChoices.motorcyle)
+    driver_vehicle_name = models.CharField(max_length=255,blank=True, null=True)
+    driver_vehicle_color = models.CharField(max_length=255,blank=True, null=True)
+    driver_vehicle_capacity = models.CharField(max_length=255, choices=SeaterChoices.choices,default=SeaterChoices.ONE)
     driver_gender = models.CharField(max_length=255,blank=True, null=True)
     driver_photo = models.CharField(max_length=255,blank=True, null=True)
     driver_is_verified = models.BooleanField(default=False)

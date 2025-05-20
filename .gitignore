@@ -1,5 +1,3 @@
-ecommerce/migrations
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -10,3 +8,5 @@ ecommerce/migrations
 *.njsproj
 *.sln
 *.sw?
+*.sqlite3
+*migrations

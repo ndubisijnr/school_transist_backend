@@ -76,6 +76,10 @@ class HubRequestSerializer(serializers.Serializer):
     uni = serializers.CharField(max_length=255)
     driver_fullname = serializers.CharField(max_length=255)
     driver_gender = serializers.CharField(max_length=255)
+    driver_vehicle_type  = serializers.CharField(max_length=255)
+    driver_vehicle_name  = serializers.CharField(max_length=255)
+    driver_vehicle_color  = serializers.CharField(max_length=255)
+    driver_vehicle_capacity  = serializers.CharField(max_length=255)
 
 class LocationRequestSerializer(serializers.Serializer):
     uni = serializers.CharField(max_length=255)

@@ -183,7 +183,7 @@ class StudentListCreateAPIView(APIView):
         if serializer.is_valid():
             if validate_token(request):
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class StudentDetailAPIView(APIView):
@@ -200,7 +200,7 @@ class StudentDetailAPIView(APIView):
         if validate_token(request):
             student = get_object_or_404(Student, pk=pk)
             serializer = StudentSerializer(student)
-            return Response(serializer.data)
+            return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_200_OK)
     
 
     """
@@ -221,8 +221,8 @@ class StudentDetailAPIView(APIView):
             serializer = StudentSerializer(student, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'code':'01', 'message':'something went wrong', 'data':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
     """
@@ -238,7 +238,7 @@ class StudentDetailAPIView(APIView):
         if validate_token(request):
             student = get_object_or_404(Student, pk=pk)
             student.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({'code':'00', 'message':'success'}, status=status.HTTP_200_OK)
 
 # ---- UNIVERSITY CRUD ----
 class UniListCreateAPIView(APIView):
@@ -271,8 +271,8 @@ class UniListCreateAPIView(APIView):
             serializer = UniSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'code':'01', 'message':'something went wrong', 'data':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 class UniDetailAPIView(APIView):
     """
@@ -288,7 +288,7 @@ class UniDetailAPIView(APIView):
         if validate_token(request):
             uni = get_object_or_404(Uni, pk=pk)
             serializer = UniSerializer(uni)
-            return Response(serializer.data)
+            return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_200_OK)
 
 
     """
@@ -307,8 +307,8 @@ class UniDetailAPIView(APIView):
             serializer = UniSerializer(uni, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'code':'01', 'message':'something went wrong', 'data':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     """
     remove registered universities.
@@ -323,7 +323,7 @@ class UniDetailAPIView(APIView):
         if validate_token(request):
             uni = get_object_or_404(Uni, pk=pk)
             uni.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({'code':'00', 'message':'success'},status=status.HTTP_200_OK)
 
 
 # ---- HUB CRUD ----
@@ -359,8 +359,8 @@ class HubListCreateAPIView(APIView):
             serializer = HubSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'code':'01', 'message':'something went wrong', 'data':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class HubDetailAPIView(APIView):
@@ -369,7 +369,7 @@ class HubDetailAPIView(APIView):
         if validate_token(request):
             hub = get_object_or_404(Hub, pk=pk)
             serializer = HubSerializer(hub)
-            return Response(serializer.data)
+            return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_200_OK)
 
     """
     updated hubs.
@@ -387,14 +387,14 @@ class HubDetailAPIView(APIView):
             serializer = HubSerializer(hub, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'code':'01', 'message':'something went wrong', 'data':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         if validate_token(request):
             hub = get_object_or_404(Hub, pk=pk)
             hub.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({'code':'00', 'message':'success'},status=status.HTTP_200_OK)
 
 
 # ---- LOCATION CRUD ----
@@ -405,7 +405,7 @@ class LocationDetailAPIView(APIView):
         if validate_token(request):
             location = Location.objects.filter(uni=pk)
             serializer = LocationSerializer(location, many=True)
-            return Response(serializer.data)
+            return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_200_OK)
 
     """
     updated hubs.
@@ -423,14 +423,14 @@ class LocationDetailAPIView(APIView):
             serializer = Location(location, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'code':'01', 'message':'something went wrong', 'data':serializer.error}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         if validate_token(request):
             location = get_object_or_404(Location, pk=pk)
             location.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({'code':'00', 'message':'success'},status=status.HTTP_200_OK)
 
 # ---- RIDE CRUD ----
 class RideListCreateAPIView(APIView):
@@ -438,7 +438,7 @@ class RideListCreateAPIView(APIView):
         if validate_token(request):
             rides = Ride.objects.all()
             serializer = RideSerializer(rides, many=True)
-            return Response(serializer.data)
+            return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_200_OK)
 
     """
     request a ride.
@@ -455,15 +455,15 @@ class RideListCreateAPIView(APIView):
             serializer = RideSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'code':'01', 'message':'somthing went wrong', 'data':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 class RideDetailAPIView(APIView):
     def get(self, request, pk):
         if validate_token(request):
             ride = get_object_or_404(Ride, pk=pk)
             serializer = RideSerializer(ride)
-            return Response(serializer.data)
+            return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_200_OK)
 
     """
     update a ride.
@@ -481,11 +481,11 @@ class RideDetailAPIView(APIView):
             serializer = RideSerializer(ride, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'code':'01', 'message':'something went wrong', 'data':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         if validate_token(request):
             ride = get_object_or_404(Ride, pk=pk)
             ride.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({'code':'00', 'message':'success'}, status=status.HTTP_200_OK)
