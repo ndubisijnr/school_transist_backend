@@ -57,8 +57,6 @@ class RideSerializer(serializers.ModelSerializer):
         model = Ride
         fields = "__all__"
 
-
-
 class UserRequestSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=255)
     password = serializers.CharField(max_length=255)

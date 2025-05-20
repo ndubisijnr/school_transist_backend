@@ -255,8 +255,7 @@ class UniListCreateAPIView(APIView):
         if validate_token(request):
             unis = Uni.objects.all()
             serializer = UniSerializer(unis, many=True)
-            return Response(serializer.data)
-
+            return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_200_OK)
     """
     registered a university.
     """
