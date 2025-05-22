@@ -22,7 +22,7 @@ class UserLoginSerializer(serializers.Serializer):
     
     # This serializer is only for validation, not for creating users
     class Meta:
-        fields = "__all__"
+        fields = ('email', 'password')
 
 class UniSerializer(serializers.ModelSerializer):
     class Meta:

@@ -71,7 +71,7 @@ class AuthenticationView(APIView):
             }
             token = jwt.encode(token_payload, token_key, algorithm=algorithm_key)
 
-            serialize_data = self.serializer_class(user)
+            serialize_data = UserSerializer(user)
             student = Student.objects.filter(user_id=user.id).first()
             hub = Hub.objects.filter(user_id=user.id).first()
             return Response({
