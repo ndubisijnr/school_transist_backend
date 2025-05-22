@@ -11,7 +11,7 @@ import jwt
 from django.contrib.auth.hashers import make_password
 from drf_yasg.utils import swagger_auto_schema
 from get_user_token import  get_user_HTTP_Auth_token
-import json
+from django.http import JsonResponse
 
 load_dotenv()
 token_key = os.getenv("token_secret_key")
@@ -72,9 +72,13 @@ class AuthenticationView(APIView):
             token = jwt.encode(token_payload, token_key, algorithm=algorithm_key)
 
             serialize_data = self.serializer_class(user)
+            student = Student.objects.filter(user_id=user.id).first()
+            hub = Hub.objects.filter(user_id=user.id).first()
             return Response({
                 'data': serialize_data.data,
                 'token': token,
+                'student': StudentSerializer(student).data if student else None, 
+                'hub':HubSerializer(hub).data if hub else None,
                 'code': '00',
                 'message': 'Login was successful'
             }, status=status.HTTP_200_OK)
@@ -113,6 +117,7 @@ class UserView(APIView):
                 serializer.save()
 
                 user = User.objects.filter(email=email).first()
+
                 token_payload = {
                             'id': user.id,
                             # 'exp': datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=60), #set session timeout for three days,

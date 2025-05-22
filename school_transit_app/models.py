@@ -53,8 +53,8 @@ class Uni(models.Model):
 
 ## student at a university
 class Student(models.Model):
-    uni = models.ForeignKey('Uni', on_delete=models.CASCADE,blank=True, null=True)
-    user = models.ForeignKey('User', on_delete=models.CASCADE,blank=True, null=True, default="1")
+    uni_id = models.CharField(max_length=255)
+    user_id = models.CharField(max_length=255)
     full_name = models.CharField(max_length=255)
     school_id = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -88,8 +88,8 @@ class Hub(models.Model):
         car = 'car', 'car'
 
        
-    uni = models.ForeignKey('Uni', on_delete=models.CASCADE,blank=True, null=True)
-    user = models.ForeignKey('User', on_delete=models.CASCADE,blank=True, null=True, default="1")
+    uni_id = models.CharField(max_length=255)
+    user_id = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_availiable = models.BooleanField(default=True)
