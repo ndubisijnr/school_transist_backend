@@ -78,7 +78,7 @@ class AuthenticationView(APIView):
             driver_uni = None
             if student is not None:
                 uni = UniSerializer(Uni.objects.filter(id=student.uni_id).first()).data
-            if driver_uni is not None:
+            if hub is not None:
                 driver_uni = UniSerializer(Uni.objects.filter(id=hub.uni_id).first()).data
 
             return Response({
