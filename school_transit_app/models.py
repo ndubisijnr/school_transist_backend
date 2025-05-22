@@ -83,7 +83,7 @@ class Hub(models.Model):
         TWO = 'two', 'two seater'
 
     class VehicleTypeChoices(models.TextChoices):
-        motorcyle = 'motorcyle', 'motorcyle'
+        motorcycle = 'motorcycle', 'motorcycle'
         tricylce = 'tricylce', 'tricylce'
         car = 'car', 'car'
 

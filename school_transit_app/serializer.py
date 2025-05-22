@@ -73,7 +73,8 @@ class StudentRequestSerializer(serializers.Serializer):
 
 
 class HubRequestSerializer(serializers.Serializer):
-    uni = serializers.CharField(max_length=255)
+    uni_id = serializers.CharField(max_length=255)
+    user_id = serializers.CharField(max_length=255)
     driver_fullname = serializers.CharField(max_length=255)
     driver_gender = serializers.CharField(max_length=255)
     driver_vehicle_type  = serializers.CharField(max_length=255)
