@@ -9,4 +9,4 @@
 *.sln
 *.sw?
 *.sqlite3
-*migrations
+**/migrations/
