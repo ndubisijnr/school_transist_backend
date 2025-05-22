@@ -94,7 +94,7 @@ class Hub(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_availiable = models.BooleanField(default=True)
     driver_fullname = models.CharField(max_length=255,blank=True, null=True)
-    driver_vehicle_type = models.CharField(max_length=255,choices=VehicleTypeChoices.choices,default=VehicleTypeChoices.motorcyle)
+    driver_vehicle_type = models.CharField(max_length=255,choices=VehicleTypeChoices.choices,default=VehicleTypeChoices.motorcycle)
     driver_vehicle_name = models.CharField(max_length=255,blank=True, null=True)
     driver_vehicle_color = models.CharField(max_length=255,blank=True, null=True)
     driver_vehicle_capacity = models.CharField(max_length=255, choices=SeaterChoices.choices,default=SeaterChoices.ONE)
