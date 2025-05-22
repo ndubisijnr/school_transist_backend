@@ -75,10 +75,12 @@ class AuthenticationView(APIView):
             student = Student.objects.filter(user_id=user.id).first()
             hub = Hub.objects.filter(user_id=user.id).first()
             return Response({
-                'data': serialize_data.data,
+                'data': {'user':serialize_data.data,
+                         'student': StudentSerializer(student).data if student else None,
+                         'hub':HubSerializer(hub).data if hub else None
+                         },
+                
                 'token': token,
-                'student': StudentSerializer(student).data if student else None, 
-                'hub':HubSerializer(hub).data if hub else None,
                 'code': '00',
                 'message': 'Login was successful'
             }, status=status.HTTP_200_OK)
