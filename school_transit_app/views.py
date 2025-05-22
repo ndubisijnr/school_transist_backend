@@ -74,7 +74,7 @@ class AuthenticationView(APIView):
             serialize_data = UserSerializer(user)
             student = Student.objects.filter(user_id=user.id).first()
             hub = Hub.objects.filter(user_id=user.id).first()
-            uni = Uni.objects.filter(id=student.id).first()
+            uni = Uni.objects.filter(id=student.uni_id).first()
             return Response({
                 'data': {'user':serialize_data.data,
                          'student': StudentSerializer(student).data if student else None,
