@@ -110,10 +110,17 @@ class Hub(models.Model):
 ## rides made by the student using the hub at the university
 class Ride(models.Model):
     class StatusChoices(models.TextChoices):
-        MADY = 'mady', 'ride requested'
-        NUKE = 'nuke', 'ride is on the way'
-        SPEEDY = 'speedy', 'ride in transit'
-        ZEUS = 'zeus', 'ride complete'
+        REQUESTED = 'requested', 'ride requested'
+        ACCEPTED = 'accepted', 'ride is on the way'
+        DECLINED = 'declined', 'ride declined'
+        CANCELLED = 'cancelled', 'ride cancelled'
+        NA = 'na', 'not applicable'
+        ONGOING = 'ongoing', 'ride ongoing'
+        WAITING = 'waiting', 'ride waiting'
+        ARRIVED = 'arrived', 'ride arrived'
+        IN_PROGRESS = 'in_progress', 'ride in progress'
+        COMPLETED = 'completed', 'ride completed'
+
 
     class SeaterChoices(models.TextChoices):
         ONE = 'one', 'one seater'
@@ -128,7 +135,7 @@ class Ride(models.Model):
     hub = models.ForeignKey('Hub', on_delete=models.CASCADE, blank=True, null=True)
     uni = models.ForeignKey('Uni', on_delete=models.CASCADE, blank=True, null=True)
     transit_fee = models.CharField(max_length=255,blank=True, null=True)
-    transit_status = models.CharField(max_length=225,choices=StatusChoices.choices,default="NA")
+    transit_status = models.CharField(max_length=225,choices=StatusChoices.choices, default=StatusChoices.NA)
     wait_time = models.CharField(max_length=255,blank=True, null=True)
     seater =  models.CharField(max_length=225,choices=SeaterChoices.choices,default=SeaterChoices.ONE)
     review_comment = models.CharField(max_length=255)

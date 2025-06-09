@@ -95,3 +95,10 @@ class UniversityRequestSerializer(serializers.Serializer):
 class RequestRideRequestSerializer(serializers.Serializer):
     where_from = serializers.CharField(max_length=255)
     where_to = serializers.CharField(max_length=255)
+    transit_fee = serializers.CharField(max_length=255)
+    transit_status = serializers.CharField(max_length=255)
+    student = serializers.CharField(max_length=255)
+    hub = serializers.CharField(max_length=255)
+    uni = serializers.CharField(max_length=255)
+    seater = serializers.CharField(max_length=255)
+    review_comment = serializers.CharField(max_length=255, required=False, allow_blank=True)

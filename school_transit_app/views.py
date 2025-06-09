@@ -474,6 +474,7 @@ class RideListCreateAPIView(APIView):
                 return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_201_CREATED)
             return Response({'code':'01', 'message':'somthing went wrong', 'data':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class RideDetailAPIView(APIView):
     def get(self, request, pk):
         if validate_token(request):
