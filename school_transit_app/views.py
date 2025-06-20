@@ -511,7 +511,7 @@ class RideDetailAPIView(APIView):
 class RideDetailByUniIdAPIView(APIView):
     def get(self, request, id):
         if validate_token(request):
-            ride_by_uni = get_object_or_404(Ride, uni=id)
+            ride_by_uni =  Ride.objects.filter(uni=id)
             serializer = RideSerializer(ride_by_uni, many=True)
             if not serializer.data:
                 return Response({'code':'01', 'message':'no ride found for this university'}, status=status.HTTP_404_NOT_FOUND)
