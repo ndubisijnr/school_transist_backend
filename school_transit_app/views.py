@@ -468,11 +468,10 @@ class RideListCreateAPIView(APIView):
     )
     def post(self, request):
         if validate_token(request):
-            serializer = RideSerializer(data=request.data)
+            serializer = RideSerializer(data=request.data, many=True)
             if serializer.is_valid():
                 serializer.save()
-                response_serializer = RideSerializer(serializer.data, many=True)
-                return Response({'code':'00', 'message':'success', 'data':response_serializer.data}, status=status.HTTP_201_CREATED)
+                return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_201_CREATED)
             return Response({'code':'01', 'message':'somthing went wrong', 'data':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -480,7 +479,7 @@ class RideDetailAPIView(APIView):
     def get(self, request, pk):
         if validate_token(request):
             ride = get_object_or_404(Ride, pk=pk)
-            serializer = RideSerializer(ride, many=True)
+            serializer = RideSerializer(ride)
             return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_200_OK)
 
     """
@@ -496,11 +495,10 @@ class RideDetailAPIView(APIView):
     def put(self, request, pk):
         if validate_token(request):
             ride = get_object_or_404(Ride, pk=pk)
-            serializer = RideSerializer(ride, data=request.data)
+            serializer = RideSerializer(ride, data=request.data, many=True)
             if serializer.is_valid():
                 serializer.save()
-                response_serializer = RideSerializer(serializer.data, many=True)
-                return Response({'code':'00', 'message':'success', 'data':response_serializer.data}, status=status.HTTP_201_CREATED)
+                return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_201_CREATED)
             return Response({'code':'01', 'message':'something went wrong', 'data':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
