@@ -479,7 +479,7 @@ class RideDetailAPIView(APIView):
     def get(self, request, pk):
         if validate_token(request):
             ride = get_object_or_404(Ride, pk=pk)
-            serializer = RideSerializer(ride)
+            serializer = RideSerializer(ride, many=True)
             return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_200_OK)
 
     """
@@ -498,7 +498,7 @@ class RideDetailAPIView(APIView):
             serializer = RideSerializer(ride, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response({'code':'00', 'message':'success'}, status=status.HTTP_201_CREATED)
+                return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_201_CREATED)
             return Response({'code':'01', 'message':'something went wrong', 'data':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
@@ -511,7 +511,7 @@ class RideDetailAPIView(APIView):
 class RideDetailByUniIdAPIView(APIView):
     def get(self, request, id):
         if validate_token(request):
-            ride_by_uni =  Ride.objects.filter(uni=id)
+            ride_by_uni = get_object_or_404(Ride, uni=id)
             serializer = RideSerializer(ride_by_uni, many=True)
             if not serializer.data:
                 return Response({'code':'01', 'message':'no ride found for this university'}, status=status.HTTP_404_NOT_FOUND)
