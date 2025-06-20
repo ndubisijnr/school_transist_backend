@@ -139,7 +139,3 @@ class Ride(models.Model):
     wait_time = models.CharField(max_length=255,blank=True, null=True, default=5)
     seater =  models.CharField(max_length=225,choices=SeaterChoices.choices,default=SeaterChoices.ONE)
     review_comment = models.CharField(max_length=255)
-
-
-    def save(self, force_insert = ..., force_update = ..., using = ..., update_fields = ...):
-        return super().save(force_insert, force_update, using, update_fields)
