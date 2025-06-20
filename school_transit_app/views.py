@@ -479,7 +479,7 @@ class RideDetailAPIView(APIView):
     def get(self, request, pk):
         if validate_token(request):
             ride = get_object_or_404(Ride, pk=pk)
-            serializer = RideSerializer(ride, many=True)
+            serializer = RideSerializer(ride)
             return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_200_OK)
 
     """
