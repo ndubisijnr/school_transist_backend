@@ -99,7 +99,9 @@ class RequestRideRequestSerializer(serializers.Serializer):
     where_to = serializers.CharField(max_length=255)
     transit_fee = serializers.CharField(max_length=255)
     transit_status = serializers.CharField(max_length=255)
-    student = StudentRequestSerializer(many=True)
+    student = serializers.ListField(child=serializers.ListField(
+        child=serializers.IntegerField()
+    ))
     hub = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     uni = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     seater = serializers.CharField(max_length=255)
