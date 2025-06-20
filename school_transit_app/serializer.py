@@ -93,13 +93,19 @@ class UniversityRequestSerializer(serializers.Serializer):
     addresss = serializers.CharField(max_length=255)
     state = serializers.CharField(max_length=255)
 
+class StudentItemSerializer(serializers.Serializer):
+    full_name = serializers.CharField()
+    school_id = serializers.IntegerField()
+
 
 class RequestRideRequestSerializer(serializers.Serializer):
     where_from = serializers.CharField(max_length=255)
     where_to = serializers.CharField(max_length=255)
     transit_fee = serializers.CharField(max_length=255)
     transit_status = serializers.CharField(max_length=255)
-    student = serializers.ListField(child=serializers.IntegerField())
+    students = StudentItemSerializer(many=True)
+
+
     hub = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     uni = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     seater = serializers.CharField(max_length=255)
