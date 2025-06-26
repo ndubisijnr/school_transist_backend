@@ -514,7 +514,7 @@ class RideListCreateAPIView(APIView):
         if validate_token(request):
             serializer = RequestRideRequestSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save()
+                instance = serializer.save()
                 response_serializer = RideSerializer(instance)
                 return Response({'code':'00', 'message':'success', 'data':response_serializer.data}, status=status.HTTP_201_CREATED)
             return Response({'code':'01', 'message':'something went wrong', 'data':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
