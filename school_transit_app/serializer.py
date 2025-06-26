@@ -90,17 +90,21 @@ class LocationRequestSerializer(serializers.Serializer):
 
 class UniversityRequestSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=225)
-    addresss = serializers.CharField(max_length=255)
+    address = serializers.CharField(max_length=255)
     state = serializers.CharField(max_length=255)
 
 
 class RequestRideRequestSerializer(serializers.Serializer):
-    where_from = serializers.CharField(max_length=255)
-    where_to = serializers.CharField(max_length=255)
+    where_from = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
+    where_to = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
     transit_fee = serializers.CharField(max_length=255)
     transit_status = serializers.CharField(max_length=255)
-    student = serializers.ListField(child=serializers.IntegerField())
-    hub = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
-    uni = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
+    student = serializers.IntegerField(allow_null=True)
+    hub = serializers.IntegerField(allow_null=True)
     seater = serializers.CharField(max_length=255)
-    review_comment = serializers.CharField(max_length=255, required=False, allow_blank=True)
+    review_comment = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
+
+
+    def create(self, validated_data):
+        print(validated_data)
+        return Ride.objects.create(**validated_data)
