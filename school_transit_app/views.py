@@ -589,11 +589,100 @@ class RideDetailAPIView(APIView):
             return Response({'code':'00', 'message':'success'}, status=status.HTTP_200_OK)
         
 
-class RideDetailByUniIdAPIView(APIView):
+class RideDetailByStudentIdAPIView(APIView):
     def get(self, request, id):
         if validate_token(request):
-            ride_by_uni = get_object_or_404(Ride, student=id)
+            ride_by_uni = Ride.objects.filter(student=id)
             serializer = RideSerializer(ride_by_uni, many=True)
-            if not serializer.data:
-                return Response({'code':'01', 'message':'no ride found for this student'}, status=status.HTTP_404_NOT_FOUND)
-            return Response({'code':'00', 'message':'success', 'data':serializer.data}, status=status.HTTP_200_OK)
+
+            ride_list = []
+            for ride_data in serializer.data:
+                student_id = ride_data['student']
+                hub_id = ride_data.get('hub')  # Use .get to avoid KeyError
+
+                try:
+                    student = Student.objects.get(id=student_id)
+                except Student.DoesNotExist:
+                    continue  # Skip this ride if student doesn't exist
+
+                # Prepare student data
+                student_data = {
+                    'id': student.id,
+                    'name': student.full_name,
+                }
+
+                # Try to fetch hub data if hub_id exists
+                hub_data = None
+                if hub_id:
+                    try:
+                        hub = Hub.objects.get(id=hub_id)
+                        hub_data = {
+                            'id': hub.id,
+                            'name': hub.driver_fullname,
+                            'vehicle_type': hub.driver_vehicle_type,
+                            'vehicle_name': hub.driver_vehicle_name,
+                            'vehicle_color': hub.driver_vehicle_color,
+                            'vehicle_capacity': hub.driver_vehicle_capacity,
+                            'vehicle_verified': hub.driver_is_verified,
+                            'gender': hub.driver_gender,
+                        }
+                    except Hub.DoesNotExist:
+                        pass  # hub_data stays None
+
+                # Build the final ride dictionary
+                ride_data = dict(ride_data)
+                ride_data['student'] = student_data
+                ride_data['hub'] = hub_data  # This can be None
+
+                ride_list.append(ride_data)
+
+            return Response({'code': '00', 'message': 'success', 'data': ride_list}, status=status.HTTP_200_OK)
+
+class RideDetailByHubIdAPIView(APIView):
+    def get(self, request, id):
+        if validate_token(request):
+            ride_by_uni = Ride.objects.filter(hid=id)
+            serializer = RideSerializer(ride_by_uni, many=True)
+
+            ride_list = []
+            for ride_data in serializer.data:
+                student_id = ride_data['student']
+                hub_id = ride_data.get('hub')  # Use .get to avoid KeyError
+
+                try:
+                    student = Student.objects.get(id=student_id)
+                except Student.DoesNotExist:
+                    continue  # Skip this ride if student doesn't exist
+
+                # Prepare student data
+                student_data = {
+                    'id': student.id,
+                    'name': student.full_name,
+                }
+
+                # Try to fetch hub data if hub_id exists
+                hub_data = None
+                if hub_id:
+                    try:
+                        hub = Hub.objects.get(id=hub_id)
+                        hub_data = {
+                            'id': hub.id,
+                            'name': hub.driver_fullname,
+                            'vehicle_type': hub.driver_vehicle_type,
+                            'vehicle_name': hub.driver_vehicle_name,
+                            'vehicle_color': hub.driver_vehicle_color,
+                            'vehicle_capacity': hub.driver_vehicle_capacity,
+                            'vehicle_verified': hub.driver_is_verified,
+                            'gender': hub.driver_gender,
+                        }
+                    except Hub.DoesNotExist:
+                        pass  # hub_data stays None
+
+                # Build the final ride dictionary
+                ride_data = dict(ride_data)
+                ride_data['student'] = student_data
+                ride_data['hub'] = hub_data  # This can be None
+
+                ride_list.append(ride_data)
+
+            return Response({'code': '00', 'message': 'success', 'data': ride_list}, status=status.HTTP_200_OK)
