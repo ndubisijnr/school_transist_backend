@@ -53,6 +53,8 @@ class HubSerializer(serializers.ModelSerializer):
 
 
 class RideSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Ride
         fields = "__all__"
