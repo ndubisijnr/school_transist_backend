@@ -127,15 +127,14 @@ class Ride(models.Model):
         TWO = 'two', 'two seater'
        
 
-    where_from = models.CharField(max_length=255)
-    where_to = models.CharField(max_length=255)
+    where_from = models.CharField(max_length=255, blank=True, null=True)
+    where_to = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    student = models.ManyToManyField('Student', blank=True)
-    hub = models.ForeignKey('Hub', on_delete=models.CASCADE, blank=True, null=True)
-    uni = models.ForeignKey('Uni', on_delete=models.CASCADE, blank=True, null=True)
+    student = models.IntegerField(blank=True, null=True)
+    hub = models.CharField(max_length=255,blank=True, null=True)
     transit_fee = models.CharField(max_length=255,blank=True, null=True)
     transit_status = models.CharField(max_length=225,choices=StatusChoices.choices, default=StatusChoices.NA)
     wait_time = models.CharField(max_length=255,blank=True, null=True, default=5)
     seater =  models.CharField(max_length=225,choices=SeaterChoices.choices,default=SeaterChoices.ONE)
-    review_comment = models.CharField(max_length=255)
+    review_comment = models.CharField(max_length=255,blank=True, null=True)
